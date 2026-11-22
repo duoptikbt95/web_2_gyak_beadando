@@ -108,7 +108,7 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
                             <strong>Hársfalvi-Kuczmogh Miklós</strong> D19FB3
                         </span>
                         <span>
-                            <strong>Marton Tamás</strong> (NEPTUN2)
+                            <strong>Marton Tamás</strong> S70LPH
                         </span>
                     </span>
                 </div>

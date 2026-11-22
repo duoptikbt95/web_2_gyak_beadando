@@ -4,7 +4,7 @@ import { Head, Link, usePage } from '@inertiajs/react';
 
 export default function Welcome() {
     const { auth } = usePage<SharedData>().props;
-    const isAdmin = auth.user && (auth.user as any).role === 'admin';
+    const isAdmin = auth.user?.role === 'admin';
 
     return (
         <PublicLayout>

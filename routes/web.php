@@ -7,14 +7,48 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AdminCrudController;
 use App\Http\Controllers\DiagramController;
 use App\Http\Controllers\UserRoleController;
+use App\Models\Gep;
+use App\Models\Szoftver;
+use App\Models\Telepites;
+use App\Models\Message;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
+    Route::get('dashboard', function (Request $request) {
+        $user = $request->user();
+        $isAdmin = (bool) ($user && ((bool) ($user->is_admin ?? false) || ($user->role ?? '') === 'admin'));
+
+        $stats = [
+            'gepekCount' => Gep::count(),
+            'asztaliCount' => Gep::where('tipus', 'asztali')->count(),
+            'notebookCount' => Gep::where('tipus', 'notebook')->count(),
+            'szoftverekCount' => Szoftver::count(),
+            'kategoriakCount' => Szoftver::whereNotNull('kategoria')
+                ->where('kategoria', '!=', '')
+                ->distinct('kategoria')
+                ->count('kategoria'),
+            'telepitesekCount' => Telepites::count(),
+            'uzenetekCount' => $isAdmin ? Message::count() : null,
+        ];
+
+        $legutobbiTelepitesek = Telepites::with(['gep', 'szoftver'])
+            ->latest('id')
+            ->take(6)
+            ->get();
+
+        $legutobbiUzenetek = $isAdmin
+            ? Message::orderBy('created_at', 'desc')->take(5)->get()
+            : [];
+
+        return Inertia::render('dashboard', [
+            'stats' => $stats,
+            'legutobbiTelepitesek' => $legutobbiTelepitesek,
+            'legutobbiUzenetek' => $legutobbiUzenetek,
+        ]);
     })->name('dashboard');
 });
 

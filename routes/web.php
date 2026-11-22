@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\DatabaseController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -18,6 +19,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
         return 'Csak admin látja!';
     });
 });
+
+Route::get('/adatbazis', [DatabaseController::class, 'index'])->name('adatbazis');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

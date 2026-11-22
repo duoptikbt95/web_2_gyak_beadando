@@ -13,5 +13,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'admin@admin.com'],
             ['name' => 'Admin', 'password' => bcrypt('Admin123!'), 'role' => 'admin']
         );
+
+        $this->call(AdatSeeder::class);
     }
 }

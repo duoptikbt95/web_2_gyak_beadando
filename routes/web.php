@@ -6,6 +6,7 @@ use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AdminCrudController;
 use App\Http\Controllers\DiagramController;
+use App\Http\Controllers\UserRoleController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -48,6 +49,14 @@ Route::get('/adatbazis', [DatabaseController::class, 'index'])->name('adatbazis'
 Route::get('/kapcsolat', [ContactController::class, 'create'])->name('kapcsolat.create');
 Route::post('/kapcsolat', [ContactController::class, 'store'])->name('kapcsolat.store');
 Route::get('/diagram', [DiagramController::class, 'index'])->name('diagram.index');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/jogosultsagok', [UserRoleController::class, 'index'])->name('jogosultsagok.index');
+    Route::post('/jogosultsagok', [UserRoleController::class, 'store'])->name('jogosultsagok.store');
+    Route::patch('/jogosultsagok/{targetUser}', [UserRoleController::class, 'update'])->name('jogosultsagok.update');
+    Route::patch('/jogosultsagok/{targetUser}/password', [UserRoleController::class, 'updatePassword'])->name('jogosultsagok.password');
+    Route::delete('/jogosultsagok/{targetUser}', [UserRoleController::class, 'destroy'])->name('jogosultsagok.destroy');
+});
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\AdminCrudController;
 use App\Http\Controllers\DiagramController;
 
 Route::get('/', function () {
@@ -25,6 +26,22 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin-teszt', function () {
         return 'Csak admin látja!';
     });
+
+    // Telepítések CRUD
+    Route::get('/crud', [AdminCrudController::class, 'index'])->name('crud.index');
+    Route::post('/crud', [AdminCrudController::class, 'store'])->name('crud.store');
+    Route::put('/crud/{telepites}', [AdminCrudController::class, 'update'])->name('crud.update');
+    Route::delete('/crud/{telepites}', [AdminCrudController::class, 'destroy'])->name('crud.destroy');
+
+    // Gépek CRUD
+    Route::post('/crud/gepek', [AdminCrudController::class, 'storeGep'])->name('crud.gepek.store');
+    Route::put('/crud/gepek/{gep}', [AdminCrudController::class, 'updateGep'])->name('crud.gepek.update');
+    Route::delete('/crud/gepek/{gep}', [AdminCrudController::class, 'destroyGep'])->name('crud.gepek.destroy');
+
+    // Szoftverek CRUD
+    Route::post('/crud/szoftverek', [AdminCrudController::class, 'storeSzoftver'])->name('crud.szoftverek.store');
+    Route::put('/crud/szoftverek/{szoftver}', [AdminCrudController::class, 'updateSzoftver'])->name('crud.szoftverek.update');
+    Route::delete('/crud/szoftverek/{szoftver}', [AdminCrudController::class, 'destroySzoftver'])->name('crud.szoftverek.destroy');
 });
 
 Route::get('/adatbazis', [DatabaseController::class, 'index'])->name('adatbazis');

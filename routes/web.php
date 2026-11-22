@@ -13,5 +13,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 });
 
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin-teszt', function () {
+        return 'Csak admin látja!';
+    });
+});
+
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

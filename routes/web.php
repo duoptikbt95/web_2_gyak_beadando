@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\DatabaseController;
+use App\Http\Controllers\DiagramController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -21,6 +22,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 Route::get('/adatbazis', [DatabaseController::class, 'index'])->name('adatbazis');
+Route::get('/diagram', [DiagramController::class, 'index'])->name('diagram.index');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
